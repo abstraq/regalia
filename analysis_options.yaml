@@ -1,0 +1,18 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+  errors:
+    # False positive when using Freezed
+    invalid_annotation_target: ignore
+
+linter:
+  rules:
+    always_use_package_imports: true
+    invariant_booleans: true
+    literal_only_boolean_expressions: true
+    no_adjacent_strings_in_list: true
+    prefer_double_quotes: true
+    prefer_final_local: true
