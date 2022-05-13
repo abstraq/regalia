@@ -1,4 +1,5 @@
 import "package:dio/dio.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
 
 import "../../domain/credentials.dart";
 import "../transfer/twitch_validation_response.dart";
@@ -43,3 +44,6 @@ class TwitchAuthDataSource {
     );
   }
 }
+
+/// Provider that provides the [TwitchAuthDataSource] instance.
+final twitchAuthDataSourceProvider = Provider<TwitchAuthDataSource>((_) => TwitchAuthDataSource());

@@ -1,11 +1,15 @@
 import "package:dio/dio.dart";
 import "package:fpdart/fpdart.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
 
 import "../domain/auth_failure.dart";
 import "../domain/credentials.dart";
 import "sources/secure_storage_data_source.dart";
 import "sources/twitch_auth_data_source.dart";
 
+/// Repository for authentication.
+///
+/// Handles authentication with Twitch and secure access to the credentials.
 class AuthRepository {
   final SecureStorageDataSource _secureStorageDataSource;
   final TwitchAuthDataSource _twitchAuthDataSource;
@@ -92,3 +96,10 @@ class AuthRepository {
     });
   }
 }
+
+/// Provider that provides the [AuthRepository] instance.
+final authRepositoryProvider = Provider<AuthRepository>((ref) {
+  final secureStorageDataSource = ref.watch(secureStorageDataSourceProvider);
+  final twitchAuthDataSource = ref.watch(twitchAuthDataSourceProvider);
+  return AuthRepository(secureStorageDataSource: secureStorageDataSource, twitchAuthDataSource: twitchAuthDataSource);
+});
