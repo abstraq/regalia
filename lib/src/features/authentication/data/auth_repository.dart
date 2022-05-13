@@ -28,8 +28,8 @@ class AuthRepository {
   /// in the secure storage.
   ///
   /// Returns a [TaskEither] that when resolved will contain an [AuthFailure] in case
-  /// of an issue or a [Unit] if the credentials were stored successfully.
-  TaskEither<AuthFailure, Unit> addCredentials(final String accessToken) {
+  /// of an issue or the [Credentials] if it was stored successfully.
+  TaskEither<AuthFailure, Credentials> addCredentials(final String accessToken) {
     return TaskEither(() async {
       try {
         final currentTime = DateTime.now();
@@ -42,7 +42,7 @@ class AuthRepository {
         );
         await _secureStorageDataSource.write(credentials);
         _cachedCredentials = credentials;
-        return const Right(unit);
+        return Right(credentials);
       } on DioError catch (error) {
         if (error.response?.statusCode == 401) {
           return const Left(AuthFailure("The access token is invalid."));
