@@ -1,5 +1,3 @@
-import "dart:developer" as developer;
-
 import "package:dio/dio.dart";
 
 import "../../domain/credentials.dart";
@@ -24,17 +22,12 @@ class TwitchAuthDataSource {
   /// Throws a [DioError] if an error occurred while validating the credentials.
   ///
   /// Returns a [TwitchValidationResponse] if the credentials are valid.
-  Future<TwitchValidationResponse> validate(final Credentials credentials) async {
+  Future<TwitchValidationResponse> validate(final String token) async {
     final response = await _dio.get(
       "/validate",
-      options: Options(headers: {"Authorization": "OAuth ${credentials.token}"}),
+      options: Options(headers: {"Authorization": "OAuth $token"}),
     );
-    final transferObject = TwitchValidationResponse.fromJson(response.data);
-    developer.log(
-      name: "TwitchAuthDataSource",
-      "Validated token in credentials for user ${credentials.userId}.",
-    );
-    return transferObject;
+    return TwitchValidationResponse.fromJson(response.data);
   }
 
   /// Revokes the token in the given [credentials].
@@ -47,10 +40,6 @@ class TwitchAuthDataSource {
       "/revoke",
       data: {"token": credentials.token, "client_id": credentials.clientId},
       options: Options(contentType: "application/x-www-form-urlencoded"),
-    );
-    developer.log(
-      name: "TwitchAuthDataSource",
-      "Revoked token in credentials for user ${credentials.userId}.",
     );
   }
 }

@@ -1,5 +1,4 @@
 import "dart:convert";
-import "dart:developer" as developer;
 
 import "package:flutter_secure_storage/flutter_secure_storage.dart";
 import "package:fpdart/fpdart.dart";
@@ -29,10 +28,6 @@ class SecureStorageDataSource {
   Future<void> write(final Credentials credentials) async {
     final serializedCredentials = json.encode(credentials.toJson());
     await _storage.write(key: "twitch_credentials", value: serializedCredentials);
-    developer.log(
-      name: "SecureStorageDataSource",
-      "Wrote credentials for user ${credentials.userId} to the secure storage.",
-    );
   }
 
   /// Retrieves the credentials from the [FlutterSecureStorage].
@@ -45,10 +40,6 @@ class SecureStorageDataSource {
     final serializedCredentials = await _storage.read(key: "twitch_credentials");
     if (serializedCredentials == null) return Option<Credentials>.none();
     final credentials = Credentials.fromJson(json.decode(serializedCredentials));
-    developer.log(
-      name: "SecureStorageDataSource",
-      "Retrieved credentials for user ${credentials.userId} from the secure storage.",
-    );
     return Option.of(credentials);
   }
 
@@ -58,10 +49,6 @@ class SecureStorageDataSource {
   /// storage.
   Future<void> delete() async {
     await _storage.delete(key: "twitch_credentials");
-    developer.log(
-      name: "SecureStorageDataSource",
-      "Deleted the stored credentials in the secure storage.",
-    );
   }
 }
 
