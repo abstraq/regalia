@@ -50,7 +50,6 @@ class AuthBrowser extends ChromeSafariBrowser {
             showTitle: false,
             noHistory: true,
             enableUrlBarHiding: true,
-            isSingleInstance: true,
           ),
         ),
       );

@@ -26,8 +26,11 @@ class AuthScreen extends ConsumerWidget {
               const Spacer(),
               const Expanded(child: RegaliaLogo()),
               const Spacer(),
-              const Text("Regalia is a free, open source cross-platform mobile twitch client. "
-                  "Regalia is developed by abstraq and licensed under the MIT license."),
+              const Text(
+                "Regalia is a free, open source cross-platform mobile twitch client. "
+                "Regalia is developed by abstraq and licensed under the MIT license.",
+                textAlign: TextAlign.center,
+              ),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
