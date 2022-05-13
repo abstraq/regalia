@@ -1,24 +1,30 @@
 import "package:flutter/material.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
 
-void main() => runApp(const RegaliaApp());
+import "src/routing/router.dart";
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const ProviderScope(child: RegaliaApp()));
+}
 
 /// Root widget for the application.
-class RegaliaApp extends StatelessWidget {
+class RegaliaApp extends ConsumerWidget {
   const RegaliaApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Material App",
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text("Material App Bar"),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
+    return MaterialApp.router(
+      title: "Regalia",
+      routeInformationParser: router.routeInformationParser,
+      routerDelegate: router.routerDelegate,
+      theme: ThemeData.from(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF32142D),
+          brightness: Brightness.dark,
         ),
-        body: Center(
-          child: Container(
-            child: const Text("Hello World"),
-          ),
-        ),
+        useMaterial3: true,
       ),
     );
   }
