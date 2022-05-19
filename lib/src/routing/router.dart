@@ -1,10 +1,10 @@
 import "package:go_router/go_router.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 
-import "../core/presentation/screens/home_screen.dart";
-import "../core/presentation/screens/splash_screen.dart";
 import "../features/authentication/application/credential_service.dart";
 import "../features/authentication/presentation/auth_screen.dart";
+import "../features/home/presentation/home_screen.dart";
+import "../features/splash/presentation/splash_screen.dart";
 
 final routerProvider = Provider<GoRouter>((ref) {
   final refreshStream = GoRouterRefreshStream(ref.watch(credentialServiceProvider.notifier).stream);

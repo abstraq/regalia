@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 
-import "../../../core/presentation/widgets/regalia_logo.dart";
+import "../../../common_widgets/regalia_logo.dart";
 import "../../../exceptions/auth_exception.dart";
 import "../../../exceptions/invalid_token_exception.dart";
 import "../../../exceptions/request_exception.dart";
