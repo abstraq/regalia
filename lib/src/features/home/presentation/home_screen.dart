@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 
 import "../../authentication/application/credential_service.dart";
+import "../../helix/presentation/client_user_drawer_footer.dart";
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -81,7 +82,7 @@ class HomeScreen extends ConsumerWidget {
                   ],
                 ),
               ),
-              // const ClientUserDrawerFooter()
+              const ClientUserDrawerFooter()
             ],
           ),
         ),
