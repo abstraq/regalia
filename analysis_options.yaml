@@ -10,10 +10,10 @@ analyzer:
 
 linter:
   rules:
+    always_use_package_imports: true
     invariant_booleans: true
     literal_only_boolean_expressions: true
     no_adjacent_strings_in_list: true
     only_throw_errors: true
     prefer_double_quotes: true
     prefer_final_local: true
-    prefer_relative_imports: true
