@@ -1,7 +1,6 @@
 import "dart:convert";
 
 import "package:flutter_secure_storage/flutter_secure_storage.dart";
-import "package:fpdart/fpdart.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:regalia/features/authentication/domain/credentials.dart";
 
@@ -34,12 +33,12 @@ class SecureStorageDataSource {
   /// Throws [PlatformException] if an error occurred while reading it from the secure
   /// storage.
   ///
-  /// Returns an [Option] containing the credentials if present.
-  Future<Option<Credentials>> read() async {
+  /// Returns the credentials if they were found, or null if they were not.
+  Future<Credentials?> read() async {
     final serializedCredentials = await _storage.read(key: "twitch_credentials");
-    if (serializedCredentials == null) return Option<Credentials>.none();
+    if (serializedCredentials == null) return null;
     final credentials = Credentials.fromJson(json.decode(serializedCredentials));
-    return Option.of(credentials);
+    return credentials;
   }
 
   /// Deletes the credentials from the [FlutterSecureStorage].

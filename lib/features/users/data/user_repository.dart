@@ -1,5 +1,4 @@
 import "package:dcache/dcache.dart";
-import "package:fpdart/fpdart.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:regalia/features/users/data/sources/twitch_user_data_source.dart";
 import "package:regalia/features/users/domain/user.dart";
@@ -49,16 +48,16 @@ class UserRepository {
   /// retrieve the [User] from the API, set [bypassCache] to true.
   ///
   /// Returns an [Option] containing the [User] if it was able to be retrieved.
-  Future<Option<User>> retrieveUser(final String id, {bool bypassCache = false}) async {
+  Future<User?> retrieveUser(final String id, {bool bypassCache = false}) async {
     if (!bypassCache) {
       final cachedUser = _cache.get(id);
       if (cachedUser != null) {
-        return Option.of(cachedUser);
+        return cachedUser;
       }
     }
 
     final users = await retrieveUsers([id]);
-    return users.firstOption;
+    return users.isNotEmpty ? users.first : null;
   }
 
   Future<User> retrieveClientUser({bool bypassCache = false}) async {

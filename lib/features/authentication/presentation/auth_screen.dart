@@ -61,7 +61,7 @@ class AuthScreen extends ConsumerWidget {
                   onPressed: credentialState.isLoading
                       ? null
                       : credentialState.whenOrNull<void Function()?>(
-                          data: (credentials) => credentials.isNone() ? credentialService.login : null,
+                          data: (credentials) => credentials != null ? credentialService.login : null,
                         ),
                   child: const Text("Sign in"),
                 ),

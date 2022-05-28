@@ -1,20 +1,15 @@
 import "package:dio/dio.dart";
-import "package:fpdart/fpdart.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:regalia/core/domain/exceptions/illegal_state_exception.dart";
 import "package:regalia/features/authentication/application/credential_service.dart";
 
 final helixDioProvider = Provider<Dio>((ref) {
   final credentialState = ref.watch(credentialServiceProvider);
-  final credentialsOption = credentialState.whenOrNull(data: identity);
+  final credentials = credentialState.whenOrNull(data: (x) => x);
 
-  if (credentialsOption == null) {
+  if (credentials == null) {
     throw IllegalStateException("Tried to access helix data source before the credential state is loaded.");
   }
-
-  final credentials = credentialsOption.getOrElse(
-    () => throw IllegalStateException("Tried to access helix data source while user is not authenticated."),
-  );
 
   final dio = Dio(
     BaseOptions(

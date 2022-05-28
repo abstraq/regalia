@@ -1,9 +1,8 @@
-import "package:fpdart/fpdart.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:regalia/features/authentication/data/credentials_repository.dart";
 import "package:regalia/features/authentication/domain/credentials.dart";
 
-class CredentialService extends StateNotifier<AsyncValue<Option<Credentials>>> {
+class CredentialService extends StateNotifier<AsyncValue<Credentials?>> {
   final CredentialsRepository credentialsRepository;
 
   CredentialService(this.credentialsRepository) : super(const AsyncValue.loading()) {
@@ -14,10 +13,10 @@ class CredentialService extends StateNotifier<AsyncValue<Option<Credentials>>> {
     state = const AsyncValue.loading();
     try {
       final credentials = await credentialsRepository.addCredentials();
-      state = AsyncValue.data(Option.of(credentials));
+      state = AsyncValue.data(credentials);
     } catch (e) {
       state = AsyncValue.error(e);
-      state = AsyncValue.data(Option.none());
+      state = const AsyncValue.data(null);
     }
   }
 
@@ -26,7 +25,7 @@ class CredentialService extends StateNotifier<AsyncValue<Option<Credentials>>> {
     state = const AsyncValue.loading();
     try {
       await credentialsRepository.deleteCredentials();
-      state = AsyncValue.data(Option.none());
+      state = const AsyncValue.data(null);
     } catch (e) {
       state = AsyncValue.error(e);
       state = previousState;
@@ -40,9 +39,7 @@ class CredentialService extends StateNotifier<AsyncValue<Option<Credentials>>> {
   }
 }
 
-final credentialServiceProvider = StateNotifierProvider<CredentialService, AsyncValue<Option<Credentials>>>(
-  (ref) {
-    final credentialsRepository = ref.watch(credentialsRepositoryProvider);
-    return CredentialService(credentialsRepository);
-  },
-);
+final credentialServiceProvider = StateNotifierProvider<CredentialService, AsyncValue<Credentials?>>((ref) {
+  final credentialsRepository = ref.watch(credentialsRepositoryProvider);
+  return CredentialService(credentialsRepository);
+});

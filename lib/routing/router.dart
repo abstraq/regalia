@@ -16,16 +16,20 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: "/", name: "home", builder: (context, state) => const HomeScreen()),
       GoRoute(path: "/auth", name: "auth", builder: (context, state) => const AuthScreen()),
       GoRoute(path: "/splash", name: "splash", builder: (context, state) => const SplashScreen()),
+      GoRoute(path: "/channels/:id", name: "channel", builder: (context, state) => const HomeScreen()),
     ],
     redirect: (routerState) {
       return ref.read(credentialServiceProvider).whenOrNull<String?>(
-        data: (credentialsOption) {
-          return credentialsOption.match(
-            // If the user is authenticated but still at auth or splash, redirect to the home screen.
-            (_) => ["/auth", "/splash"].contains(routerState.subloc) ? "/" : null,
-            // If the user is not authenticated but not at auth, redirect to the auth screen.
-            () => routerState.subloc != "/auth" ? "/auth" : null,
-          );
+        data: (credentials) {
+          // If the user is authenticated but still at auth or splash, redirect to the home screen.
+          if (credentials != null && ["/auth", "/splash"].contains(routerState.subloc)) {
+            return "/";
+          }
+          // If the user is not authenticated but not at auth, redirect to the auth screen.
+          if (credentials == null && routerState.subloc != "/auth") {
+            return "/auth";
+          }
+          return null;
         },
       );
     },

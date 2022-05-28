@@ -1,4 +1,3 @@
-import "package:fpdart/fpdart.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:regalia/features/authentication/data/sources/secure_storage_data_source.dart";
 import "package:regalia/features/authentication/data/sources/twitch_auth_api_data_source.dart";
@@ -47,30 +46,28 @@ class CredentialsRepository {
   /// Retrieves credentials for the user.
   ///
   /// Returns a [Option] containing the [Credentials] if present.
-  Future<Option<Credentials>> retrieveCredentials() async {
+  Future<Credentials?> retrieveCredentials() async {
     final cachedCredentials = _cachedCredentials;
     // If we have cached credentials, we can return them immediately.
     if (cachedCredentials != null) {
-      return Option.of(cachedCredentials);
+      return cachedCredentials;
     }
 
     // Otherwise, we need to fetch the credentials from the secure storage.
     final credentials = await _storageDataSource.read();
-    _cachedCredentials = credentials.toNullable();
+    _cachedCredentials = credentials;
     return credentials;
   }
 
   Future<void> deleteCredentials() async {
-    final credentialsOption = await retrieveCredentials();
-    credentialsOption.map(
-      (credentials) async {
-        /// If the credentials are not already expired revoke the token.
-        if (credentials.expiresAt.isAfter(DateTime.now())) {
-          await _apiDataSource.revoke(token: credentials.token, clientId: credentials.clientId);
-          await _storageDataSource.delete();
-        }
-      },
-    );
+    final credentials = await retrieveCredentials();
+    if (credentials == null) return;
+
+    /// If the credentials are not already expired revoke the token.
+    if (credentials.expiresAt.isAfter(DateTime.now())) {
+      await _apiDataSource.revoke(token: credentials.token, clientId: credentials.clientId);
+      await _storageDataSource.delete();
+    }
   }
 }
 
