@@ -3,6 +3,9 @@ import "package:freezed_annotation/freezed_annotation.dart";
 part "get_users_response.freezed.dart";
 part "get_users_response.g.dart";
 
+/// DTO for the response from the Twitch API when retrieving [User]s.
+///
+/// See https://dev.twitch.tv/docs/api/reference#get-users for more information.
 @freezed
 class GetUsersResponse with _$GetUsersResponse {
   const factory GetUsersResponse({required List<UserInformationPayload> data}) = _GetUsersResponse;
