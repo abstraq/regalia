@@ -23,6 +23,9 @@ final helixDioProvider = Provider<Dio>((ref) {
         "Authorization": "Bearer ${credentials.token}",
         "Client-ID": credentials.clientId,
       },
+      extra: {
+        "User-ID": credentials.userId,
+      },
     ),
   );
   dio.interceptors.add(LogInterceptor(responseBody: true, requestHeader: false));

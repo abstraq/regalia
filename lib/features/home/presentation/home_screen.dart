@@ -8,6 +8,10 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Home"),
+        centerTitle: false,
+      ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.logout),
         onPressed: () {

@@ -20,6 +20,8 @@ class TwitchUserDataSource {
     final response = await _dio.get("/users", queryParameters: queryParams);
     return GetUsersResponse.fromJson(response.data);
   }
+
+  String clientUserId() => _dio.options.extra["User-ID"];
 }
 
 final twitchUserDataSourceProvider = Provider<TwitchUserDataSource>((ref) {

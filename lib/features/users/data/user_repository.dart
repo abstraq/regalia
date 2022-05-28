@@ -58,7 +58,19 @@ class UserRepository {
     }
 
     final users = await retrieveUsers([id]);
-    return users.isEmpty ? Option.none() : Option.of(users.first);
+    return users.firstOption;
+  }
+
+  Future<User> retrieveClientUser({bool bypassCache = false}) async {
+    final clientUserId = _userDataSource.clientUserId();
+    if (!bypassCache) {
+      final cachedUser = _cache.get(clientUserId);
+      if (cachedUser != null) {
+        return cachedUser;
+      }
+    }
+    final users = await retrieveUsers([clientUserId]);
+    return users.first;
   }
 }
 
