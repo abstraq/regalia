@@ -3,8 +3,7 @@ import "dart:convert";
 import "package:flutter_secure_storage/flutter_secure_storage.dart";
 import "package:fpdart/fpdart.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
-
-import "../../domain/credentials.dart";
+import "package:regalia/features/authentication/domain/credentials.dart";
 
 /// Data source that provides access to the [FlutterSecureStorage].
 ///
