@@ -24,6 +24,7 @@ class TwitchUserDataSource {
   String clientUserId() => _dio.options.extra["User-ID"];
 }
 
-final twitchUserDataSourceProvider = Provider<TwitchUserDataSource>((ref) {
-  return TwitchUserDataSource(ref.watch(helixDioProvider));
+final twitchUserDataSourceProvider = Provider.autoDispose<TwitchUserDataSource>((ref) {
+  final dio = ref.read(helixDioProvider);
+  return TwitchUserDataSource(dio);
 });

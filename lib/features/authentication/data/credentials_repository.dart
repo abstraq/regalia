@@ -1,27 +1,21 @@
 import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:regalia/features/authentication/data/sources/auth_api_data_source.dart";
 import "package:regalia/features/authentication/data/sources/secure_storage_data_source.dart";
-import "package:regalia/features/authentication/data/sources/twitch_auth_api_data_source.dart";
-import "package:regalia/features/authentication/data/sources/twitch_auth_browser_data_source.dart";
 import "package:regalia/features/authentication/domain/credentials.dart";
 
+/// This repository is responsible for storing the [Credentials] for
+/// the app.
 class CredentialsRepository {
   final SecureStorageDataSource _storageDataSource;
-  final TwitchAuthApiDataSource _apiDataSource;
-  final TwitchAuthBrowserDataSource _browserDataSource;
+  final AuthApiDataSource _apiDataSource;
 
   Credentials? _cachedCredentials;
 
-  CredentialsRepository({
-    required SecureStorageDataSource storageDataSource,
-    required TwitchAuthApiDataSource apiDataSource,
-    required TwitchAuthBrowserDataSource browserDataSource,
-  })  : _storageDataSource = storageDataSource,
-        _apiDataSource = apiDataSource,
-        _browserDataSource = browserDataSource;
+  CredentialsRepository({required SecureStorageDataSource storageDataSource, required AuthApiDataSource apiDataSource})
+      : _storageDataSource = storageDataSource,
+        _apiDataSource = apiDataSource;
 
-  Future<Credentials> addCredentials() async {
-    // Performs the OAuth2 flow in the browser and return the token.
-    final token = await _browserDataSource.authorize();
+  Future<Credentials> addCredentials(final String token) async {
     final validationResponse = await _apiDataSource.validate(token);
     final currentTime = DateTime.now();
     final expiresIn = Duration(seconds: validationResponse.expiresIn);
@@ -68,17 +62,14 @@ class CredentialsRepository {
       await _apiDataSource.revoke(token: credentials.token, clientId: credentials.clientId);
       await _storageDataSource.delete();
     }
+    _cachedCredentials = null;
   }
 }
 
 /// Provider that provides the [CredentialsRepository] instance.
 final credentialsRepositoryProvider = Provider<CredentialsRepository>((ref) {
-  final storageDataSource = ref.watch(secureStorageDataSourceProvider);
-  final apiDataSource = ref.watch(twitchAuthApiDataSourceProvider);
-  final browserDataSource = ref.read(twitchAuthBrowserDataSourceProvider);
   return CredentialsRepository(
-    storageDataSource: storageDataSource,
-    apiDataSource: apiDataSource,
-    browserDataSource: browserDataSource,
+    storageDataSource: ref.read(secureStorageDataSourceProvider),
+    apiDataSource: ref.read(authApiDataSourceProvider),
   );
 });

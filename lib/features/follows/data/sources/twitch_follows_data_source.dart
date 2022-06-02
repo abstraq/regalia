@@ -33,6 +33,7 @@ class TwitchFollowsDataSource {
   }
 }
 
-final twitchFollowsDataSourceProvider = Provider<TwitchFollowsDataSource>((ref) {
-  return TwitchFollowsDataSource(ref.watch(helixDioProvider));
+final twitchFollowsDataSourceProvider = Provider.autoDispose<TwitchFollowsDataSource>((ref) {
+  final dio = ref.read(helixDioProvider);
+  return TwitchFollowsDataSource(dio);
 });

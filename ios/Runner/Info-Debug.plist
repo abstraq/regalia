@@ -31,7 +31,7 @@
 			<string>regalia</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>me.abstraq.regalia</string>
+				<string>rglia</string>
 			</array>
 		</dict>
 	</array>
@@ -43,6 +43,10 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_dartobservatory._tcp</string>
+	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

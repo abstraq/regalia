@@ -15,7 +15,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Accepts URIs on me.abstraq.regalia:// -->
-                <data android:scheme="me.abstraq.regalia" />
+                <data android:scheme="rglia" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

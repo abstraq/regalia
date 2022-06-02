@@ -1,10 +1,12 @@
-/// Exception for Twitch API errors.
-class TwitchAPIException implements Exception {
-  final int? statusCode;
-  final String? message;
+import "package:dio/dio.dart";
 
-  TwitchAPIException({required this.statusCode, required this.message});
+/// Exception for Twitch API errors.
+class TwitchAPIException extends DioError {
+  @override
+  final String message;
+
+  TwitchAPIException(this.message, {required super.requestOptions, required super.response});
 
   @override
-  String toString() => "TwitchAPIException(code: $statusCode, message: $message)";
+  String toString() => "TwitchAPIException: $message";
 }

@@ -8,6 +8,7 @@ class User with _$User {
     required String id,
     required String login,
     required String displayName,
+    required String description,
     required String profileImageUrl,
     required String offlineImageUrl,
     required DateTime createdAt,

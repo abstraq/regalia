@@ -29,6 +29,7 @@ class UserRepository {
         login: payload.login,
         createdAt: payload.createdAt,
         displayName: payload.displayName,
+        description: payload.description,
         broadcasterType: payload.broadcasterType,
         offlineImageUrl: payload.offlineImageUrl,
         profileImageUrl: payload.profileImageUrl,
@@ -73,6 +74,7 @@ class UserRepository {
   }
 }
 
-final userRepositoryProvider = Provider<UserRepository>((ref) {
-  return UserRepository(ref.watch(twitchUserDataSourceProvider));
+final userRepositoryProvider = Provider.autoDispose<UserRepository>((ref) {
+  final dataSource = ref.read(twitchUserDataSourceProvider);
+  return UserRepository(dataSource);
 });

@@ -17,3 +17,4 @@ linter:
     only_throw_errors: true
     prefer_double_quotes: true
     prefer_final_local: true
+    omit_local_variable_types: true
