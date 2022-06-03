@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:regalia/core/presentation/shadows.dart";
 import "package:regalia/features/authentication/application/credential_service.dart";
 
 /// Button for authenticating with Twitch.
@@ -16,8 +17,10 @@ class LoginButton extends ConsumerWidget {
     return ElevatedButton(
       onPressed: isReady ? () => ref.read(credentialServiceProvider.notifier).login() : null,
       style: ElevatedButton.styleFrom(
-        minimumSize: const Size.fromHeight(42),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+        elevation: AppShadows.darkElevation02.spreadRadius,
+        shadowColor: AppShadows.darkElevation02.color,
+        minimumSize: const Size.fromHeight(48),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
       child: const Text("Login"),
     );

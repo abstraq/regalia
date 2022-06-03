@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:regalia/core/presentation/colors.dart";
+import "package:regalia/core/presentation/text_styles.dart";
 import "package:regalia/routing/router.dart";
 
 void main() async {
@@ -21,9 +23,29 @@ class RegaliaApp extends ConsumerWidget {
       routeInformationParser: router.routeInformationParser,
       routerDelegate: router.routerDelegate,
       theme: ThemeData.from(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF32142D),
-          brightness: Brightness.dark,
+        colorScheme: const ColorScheme.dark(
+          primary: AppColors.primaryMainColor,
+          onPrimary: Colors.white,
+          secondary: AppColors.primaryLighter,
+          onSecondary: Colors.white,
+          tertiary: AppColors.primarySubtle,
+          onTertiary: Colors.white,
+          background: AppColors.darkDark0,
+          surface: AppColors.darkDark1,
+          error: AppColors.redRed1,
+        ),
+        textTheme: const TextTheme(
+          displayLarge: AppTextStyles.displayDisplay1,
+          displayMedium: AppTextStyles.displayDisplay2,
+          headlineLarge: AppTextStyles.headingsH1,
+          headlineMedium: AppTextStyles.headingsH2,
+          headlineSmall: AppTextStyles.headingsH3,
+          titleLarge: AppTextStyles.headingsH4,
+          titleMedium: AppTextStyles.headingsH5,
+          titleSmall: AppTextStyles.headingsH6,
+          bodySmall: AppTextStyles.smallLabel,
+          bodyMedium: AppTextStyles.mediumLabel,
+          bodyLarge: AppTextStyles.largeLabel,
         ),
         useMaterial3: true,
       ),

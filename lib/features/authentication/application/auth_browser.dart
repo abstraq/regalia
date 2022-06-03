@@ -49,7 +49,7 @@ class AuthBrowser extends ChromeSafariBrowser {
         return;
       }
 
-      _completer.completeError(AuthException("You did not authorize the app."));
+      _completer.completeError(AuthException(link.queryParameters["error"]!));
       return;
     }
 
