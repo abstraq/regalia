@@ -9,7 +9,7 @@ class TwitchFollowsDataSource {
   TwitchFollowsDataSource(this._dio);
 
   Future<GetUserFollowsResponse> fetchUserFollows({String? userId, int first = 100, String? after}) async {
-    final Map<String, dynamic> queryParams = {"from_id": userId ?? _dio.options.extra["User-ID"], "first": first};
+    final queryParams = <String, dynamic>{"from_id": userId ?? _dio.options.extra["User-ID"], "first": first};
 
     // If the call specified an 'after' cursor then add it to the query params.
     if (after != null) {
@@ -21,7 +21,7 @@ class TwitchFollowsDataSource {
   }
 
   Future<GetUserFollowsResponse> fetchUserFollowers({String? userId, int first = 100, String? after}) async {
-    final Map<String, dynamic> queryParams = {"to_id": userId ?? _dio.options.extra["User-ID"], "first": first};
+    final queryParams = <String, dynamic>{"to_id": userId ?? _dio.options.extra["User-ID"], "first": first};
 
     // If the call specified an 'after' cursor then add it to the query params.
     if (after != null) {
@@ -33,7 +33,7 @@ class TwitchFollowsDataSource {
   }
 }
 
-final twitchFollowsDataSourceProvider = Provider.autoDispose<TwitchFollowsDataSource>((ref) {
-  final dio = ref.read(helixDioProvider);
+final twitchFollowsDataSourceProvider = Provider<TwitchFollowsDataSource>((ref) {
+  final dio = ref.watch(helixDioProvider);
   return TwitchFollowsDataSource(dio);
 });

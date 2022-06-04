@@ -68,7 +68,7 @@ class RegaliaInterceptor extends Interceptor {
     final targetUri = response.requestOptions.uri.toString();
     final status = response.statusCode.toString();
 
-    developer.log(name: "HTTP", "Completed $method to $targetUri with status: $status ");
+    developer.log(name: "HTTP", "Completed $method to $targetUri with status: $status");
     handler.next(response);
   }
 }

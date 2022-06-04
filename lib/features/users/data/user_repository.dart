@@ -1,15 +1,12 @@
-import "package:dcache/dcache.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:regalia/features/users/data/sources/twitch_user_data_source.dart";
 import "package:regalia/features/users/domain/user.dart";
 
 /// Repository for handling [User] domain objects.
 ///
-/// This repository handles retrieving and caching [User]s from the Twitch API.
-/// The cache is a [LruCache] with a maximum size of 1000 items.
+/// This repository handles retrieving [User]s from the Twitch API.
 class UserRepository {
   final TwitchUserDataSource _userDataSource;
-  final Cache<String, User> _cache = LruCache(storage: InMemoryStorage(1000));
 
   UserRepository(this._userDataSource);
 
@@ -35,7 +32,6 @@ class UserRepository {
         profileImageUrl: payload.profileImageUrl,
         staffRole: payload.type,
       );
-      _cache.set(user.id, user);
       return user;
     }).toList();
   }
@@ -44,37 +40,19 @@ class UserRepository {
   ///
   /// [id] is the ID of the [User] to retrieve.
   ///
-  /// By default the [User] is retrieved from the cache. If the [User] is not
-  /// in the cache then it is retrieved from the API. To skip the cache and
-  /// retrieve the [User] from the API, set [bypassCache] to true.
-  ///
-  /// Returns an [Option] containing the [User] if it was able to be retrieved.
-  Future<User?> retrieveUser(final String id, {bool bypassCache = false}) async {
-    if (!bypassCache) {
-      final cachedUser = _cache.get(id);
-      if (cachedUser != null) {
-        return cachedUser;
-      }
-    }
-
+  /// Returns an [Option] containing the [User] if it was found.
+  Future<User?> retrieveUser(final String id) async {
     final users = await retrieveUsers([id]);
     return users.isNotEmpty ? users.first : null;
   }
 
   Future<User> retrieveClientUser({bool bypassCache = false}) async {
-    final clientUserId = _userDataSource.clientUserId();
-    if (!bypassCache) {
-      final cachedUser = _cache.get(clientUserId);
-      if (cachedUser != null) {
-        return cachedUser;
-      }
-    }
-    final users = await retrieveUsers([clientUserId]);
+    final users = await retrieveUsers([_userDataSource.clientUserId()]);
     return users.first;
   }
 }
 
-final userRepositoryProvider = Provider.autoDispose<UserRepository>((ref) {
-  final dataSource = ref.read(twitchUserDataSourceProvider);
+final userRepositoryProvider = Provider<UserRepository>((ref) {
+  final dataSource = ref.watch(twitchUserDataSourceProvider);
   return UserRepository(dataSource);
 });

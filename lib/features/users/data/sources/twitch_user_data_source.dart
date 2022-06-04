@@ -10,7 +10,7 @@ class TwitchUserDataSource {
   TwitchUserDataSource(this._dio);
 
   Future<GetUsersResponse> fetchUsers({List<String>? ids}) async {
-    final Map<String, dynamic> queryParams = {};
+    final queryParams = <String, dynamic>{};
 
     // If the call specified ids then add them to the query params.
     if (ids != null) {
@@ -24,7 +24,7 @@ class TwitchUserDataSource {
   String clientUserId() => _dio.options.extra["User-ID"];
 }
 
-final twitchUserDataSourceProvider = Provider.autoDispose<TwitchUserDataSource>((ref) {
-  final dio = ref.read(helixDioProvider);
+final twitchUserDataSourceProvider = Provider<TwitchUserDataSource>((ref) {
+  final dio = ref.watch(helixDioProvider);
   return TwitchUserDataSource(dio);
 });

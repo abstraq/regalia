@@ -11,7 +11,7 @@ import "package:regalia/features/authentication/application/credential_service.d
 ///
 /// When trying to access this instance when the user is not authenticated, an [IllegalStateException] will be thrown.
 /// This provider should be read not watched.
-final helixDioProvider = Provider.autoDispose<Dio>((ref) {
+final helixDioProvider = Provider<Dio>((ref) {
   final credentialState = ref.watch(credentialServiceProvider);
   final credentials = credentialState.whenOrNull(data: (x) => x);
 
@@ -27,7 +27,9 @@ final helixDioProvider = Provider.autoDispose<Dio>((ref) {
     ),
   );
 
-  dio.interceptors.add(RegaliaInterceptor());
+  dio.interceptors.addAll([
+    RegaliaInterceptor(), // Interceptor for logging and error transformation.
+  ]);
 
   return dio;
 });

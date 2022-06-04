@@ -5,8 +5,7 @@ import "package:regalia/features/follows/domain/follow.dart";
 class FollowRepository {
   final TwitchFollowsDataSource _twitchFollowsDataSource;
 
-  FollowRepository({required TwitchFollowsDataSource twitchFollowsDataSource})
-      : _twitchFollowsDataSource = twitchFollowsDataSource;
+  FollowRepository(this._twitchFollowsDataSource);
 
   /// Retrieves follows for the client user.
   Future<List<Follow>> retrieveClientFollows({String? cursor}) async {
@@ -27,9 +26,7 @@ class FollowRepository {
   }
 }
 
-final followRepositoryProvider = Provider.autoDispose<FollowRepository>((ref) {
-  final dataSource = ref.read(twitchFollowsDataSourceProvider);
-  return FollowRepository(
-    twitchFollowsDataSource: ref.read(twitchFollowsDataSourceProvider),
-  );
+final followRepositoryProvider = Provider<FollowRepository>((ref) {
+  final dataSource = ref.watch(twitchFollowsDataSourceProvider);
+  return FollowRepository(dataSource);
 });
