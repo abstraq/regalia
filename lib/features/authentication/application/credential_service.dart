@@ -44,7 +44,7 @@ class CredentialService extends StateNotifier<AsyncValue<Credentials?>> {
       final stateToken = base64Url.encode(List.generate(21, (i) => Random.secure().nextInt(256)));
       final authorizationUrl = Uri.https("id.twitch.tv", "/oauth2/authorize", {
         "client_id": _clientId,
-        "redirect_uri": "https://abstraq.me/tsuru/oauth2",
+        "redirect_uri": "rglia://",
         "response_type": "token",
         "scope": scopes.join(" "),
         "state": stateToken,
