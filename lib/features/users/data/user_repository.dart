@@ -52,7 +52,7 @@ class UserRepository {
   }
 }
 
-final userRepositoryProvider = Provider<UserRepository>((ref) {
+final userRepositoryProvider = Provider.autoDispose<UserRepository>((ref) {
   final dataSource = ref.watch(twitchUserDataSourceProvider);
   return UserRepository(dataSource);
 });

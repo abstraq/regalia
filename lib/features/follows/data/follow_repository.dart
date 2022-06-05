@@ -26,7 +26,7 @@ class FollowRepository {
   }
 }
 
-final followRepositoryProvider = Provider<FollowRepository>((ref) {
+final followRepositoryProvider = Provider.autoDispose<FollowRepository>((ref) {
   final dataSource = ref.watch(twitchFollowsDataSourceProvider);
   return FollowRepository(dataSource);
 });

@@ -3,6 +3,7 @@ import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:regalia/core/presentation/splash_screen.dart";
 import "package:regalia/features/authentication/application/credential_service.dart";
 import "package:regalia/features/authentication/presentation/auth_screen.dart";
+import "package:regalia/features/channel/presentation/channel_screen.dart";
 import "package:regalia/features/home/presentation/home_screen.dart";
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -13,17 +14,34 @@ final routerProvider = Provider<GoRouter>((ref) {
     refreshListenable: refreshStream,
     initialLocation: "/splash",
     routes: [
-      GoRoute(path: "/", name: "home", builder: (context, state) => const HomeScreen()),
-      GoRoute(path: "/auth", name: "auth", builder: (context, state) => const AuthScreen()),
-      GoRoute(path: "/splash", name: "splash", builder: (context, state) => const SplashScreen()),
-      GoRoute(path: "/channels/:id", name: "channel", builder: (context, state) => const HomeScreen()),
+      GoRoute(
+        path: "/auth",
+        name: "auth",
+        builder: (context, state) => const AuthScreen(),
+      ),
+      GoRoute(
+        path: "/splash",
+        name: "splash",
+        builder: (context, state) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: "/channels/:id",
+        name: "channel",
+        builder: (context, state) {
+          final id = state.params["id"] ?? "me";
+          if (id == "me") {
+            return const HomeScreen();
+          }
+          return ChannelScreen(id);
+        },
+      ),
     ],
     redirect: (routerState) {
       return ref.read(credentialServiceProvider).whenOrNull<String?>(
         data: (credentials) {
           // If the user is authenticated but still at auth or splash, redirect to the home screen.
           if (credentials != null && ["/auth", "/splash"].contains(routerState.subloc)) {
-            return "/";
+            return "/channels/me";
           }
           // If the user is not authenticated but not at auth, redirect to the auth screen.
           if (credentials == null && routerState.subloc != "/auth") {
