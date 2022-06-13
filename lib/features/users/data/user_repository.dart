@@ -30,7 +30,7 @@ class UserRepository {
         broadcasterType: payload.broadcasterType,
         offlineImageUrl: payload.offlineImageUrl,
         profileImageUrl: payload.profileImageUrl,
-        staffRole: payload.type,
+        role: payload.type,
       );
       return user;
     }).toList();
