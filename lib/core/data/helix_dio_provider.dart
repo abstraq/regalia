@@ -31,6 +31,6 @@ final helixDioProvider = Provider.autoDispose<Dio>((ref) {
     RegaliaInterceptor(), // Interceptor for logging and error transformation.
   ]);
 
-  ref.onDispose(() => dio.close());
+  ref.onDispose(() => dio.close(force: true));
   return dio;
 });
